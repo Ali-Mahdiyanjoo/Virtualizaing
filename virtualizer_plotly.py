@@ -16,11 +16,26 @@ import time
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+layout = go.Layout(
+    xaxis=dict(
+        autorange=True,
+        showgrid=False,
+        ticks='',
+        showticklabels=False
+    ),
+    yaxis=dict(
+        autorange=True,
+        showgrid=False,
+        ticks='',
+        showticklabels=False
+    )
+)
+
 app.layout = html.Div(
     html.Div([
-        html.H1('The time is: ' + str(datetime.now())),
         html.Div(id='live-update-text'),
-        dcc.Graph(id='live-update-graph'),
+        dcc.Graph(id='live-update-graph', figure = {'layout':layout}),
         dcc.Interval(
             id='interval-component',
             interval=1*70000, # in milliseconds
@@ -174,6 +189,11 @@ def update_graph_live(n):
                 power_data = np.array(power_list).reshape(-1, 4)
 
             return power_data
+
+        def last_update():
+            time = json_response["current_time"]
+
+            return time
         
         # template ["plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"]
         # fig.update_layout(template="ggplot2")
@@ -278,18 +298,20 @@ def update_graph_live(n):
                             row=1, col=1)
 
     fig.add_trace(go.Heatmap(z=power_Data(),
+                            xaxis=IP_info(),
                             zmin=0,
                             zmax=100,
                             colorscale='RdYlGn_r',
-                            hovertemplate = "IP: %{IP} <br>power : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>power : %{z} </br>",
                             ygap = 1,
                             xgap = 1,
                             name="power",),
                             row=1, col=2)
     fig.layout.height = 900
     fig.layout.width = 1800
-    # fig.update_layout(title_text="GPU Monitoring")
+    fig.update_layout(title_text=  f"last update : {last_update()}")
     # fig.update_layout(template="plotly")
+    fig.update_layout(yaxis_visible=False, yaxis_showticklabels=False)
 
     return fig
 
