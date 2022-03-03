@@ -7,15 +7,18 @@ from time import sleep, time
 from dash import dcc, html
 from inspect import trace
 import plotly.graph_objs as go
+import dash_bootstrap_components as dbc
 import numpy as np
 import requests
 import plotly
 import dash
 import time
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+# theme = dbc.themes.LUX
+# css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+BS = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+app = dash.Dash(__name__,external_stylesheets=[BS])
 
 layout = go.Layout(
     xaxis=dict(
@@ -200,7 +203,8 @@ def update_graph_live(n):
         # olorscale='RdYlGn_r'
 
     fig = make_subplots(rows=2,
-                        cols=5,
+                        cols=3,
+                        # specs=[[{}, {}],
                         horizontal_spacing=0.05,
                         vertical_spacing=0.075,
                         start_cell='bottom-left',
@@ -208,6 +212,7 @@ def update_graph_live(n):
                         subplot_titles=['temp', 'power'])
 
     fig.add_trace(go.Heatmap(z=fan_Data(),
+                            x = IP_info(),
                             zmin=0,
                             zmax=100,
                             colorscale=[[0.0, "rgb(0, 115, 0)"],
@@ -222,7 +227,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{IP} <br>fan : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>fan : %{z} </br>",
                             name="fan",
                             hoverongaps = False,
                             ygap = 1,
@@ -232,6 +237,7 @@ def update_graph_live(n):
                             # colorbar = {"title": "speed"}
     
     fig.add_trace(go.Heatmap(z=ugpu_Data(),
+                            x = IP_info(),
                             zmin=0,
                             zmax=100,
                             colorscale=[[0.0, "rgb(0, 115, 0)"],
@@ -246,7 +252,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{IP} <br>ugpu : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>ugpu : %{z} </br>",
                             name="ugpu",
                             hoverongaps = False,
                             ygap = 1,
@@ -254,6 +260,7 @@ def update_graph_live(n):
                             row=2, col=2)
 
     fig.add_trace(go.Heatmap(z=mgpu_Data(),
+                            x = IP_info(),
                             zmin=0,
                             zmax=100,
                             colorscale=[[0.0, "rgb(0, 115, 0)"],
@@ -268,7 +275,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{IP} <br>mgpu : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>mgpu : %{z} </br>",
                             name="mgpu",
                             hoverongaps = False,
                             ygap = 1,
@@ -276,6 +283,7 @@ def update_graph_live(n):
                             row=2, col=3)
 
     fig.add_trace(go.Heatmap(z=temp_Data(),
+                            x = IP_info(),
                             zmin=0,
                             zmax=100,
                             colorscale=[[0.0, "rgb(0, 115, 0)"],
@@ -290,7 +298,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{IP_info} <br>temp : %{z} </br>",                   
+                            hovertemplate = "IP: %{x} <br>temp : %{z} </br>",                   
                             name="temp",
                             # hoverongaps = False,
                             ygap = 1,
@@ -298,7 +306,8 @@ def update_graph_live(n):
                             row=1, col=1)
 
     fig.add_trace(go.Heatmap(z=power_Data(),
-                            xaxis=IP_info(),
+                            x=IP_info(),
+                            # y=IP_info(),
                             zmin=0,
                             zmax=100,
                             colorscale='RdYlGn_r',
@@ -308,10 +317,11 @@ def update_graph_live(n):
                             name="power",),
                             row=1, col=2)
     fig.layout.height = 900
-    fig.layout.width = 1800
-    fig.update_layout(title_text=  f"last update : {last_update()}")
+    fig.layout.width = 1900
+    fig.update_layout(title_text = f"last update : {last_update()}")
     # fig.update_layout(template="plotly")
-    fig.update_layout(yaxis_visible=False, yaxis_showticklabels=False)
+    fig.update_xaxes(visible=False)
+    fig.update_yaxes(visible=False)
 
     return fig
 
