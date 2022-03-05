@@ -13,38 +13,22 @@ import requests
 import plotly
 import dash
 import time
-
-# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-# theme = dbc.themes.LUX
-# css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
-BS = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-app = dash.Dash(__name__,external_stylesheets=[BS])
-
-layout = go.Layout(
-    xaxis=dict(
-        autorange=True,
-        showgrid=False,
-        ticks='',
-        showticklabels=False
-    ),
-    yaxis=dict(
-        autorange=True,
-        showgrid=False,
-        ticks='',
-        showticklabels=False
-    )
-)
-
+# external_stylesheets=[dbc.themes.SUPERHERO]
+app = dash.Dash(__name__,
+                meta_tags=[{'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}], update_title='Updating...')
+app.title='GPU Monitoring'
 app.layout = html.Div(
     html.Div([
         html.Div(id='live-update-text'),
-        dcc.Graph(id='live-update-graph', figure = {'layout':layout}),
+        dcc.Graph(id='live-update-graph'),
         dcc.Interval(
             id='interval-component',
             interval=1*70000, # in milliseconds
             n_intervals=0
         )
-    ])
+    ]),
+# dbc.Row([Col(children=Graph(id='live-update-graph', figure={}), lg={'size': 6, 'offset': 0, 'order': 'first'}, width=8)])
 )
 # Multiple components can update everytime interval gets fired.
 @app.callback(Output('live-update-graph', 'figure'),
@@ -317,13 +301,13 @@ def update_graph_live(n):
                             name="power",),
                             row=1, col=2)
     fig.layout.height = 900
-    fig.layout.width = 1900
+    # fig.layout.width = 1900
     fig.update_layout(title_text = f"last update : {last_update()}")
     # fig.update_layout(template="plotly")
     fig.update_xaxes(visible=False)
     fig.update_yaxes(visible=False)
-
+    # fig.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
     return fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, host="0.0.0.0", port=8052)
