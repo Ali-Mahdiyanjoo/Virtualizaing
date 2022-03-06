@@ -18,6 +18,15 @@ app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=devic
 app.title='GPU Monitoring'
 app.layout = html.Div(
     html.Div([
+        "Single dynamic Dropdown",
+        dcc.Dropdown(id="my-dynamic-dropdown"),
+        dcc.Interval(
+            id='interval-component',
+            interval=1*70000, # in milliseconds
+            n_intervals=0
+        )
+    ]),
+    html.Div([
         html.Div(id='live-update-text'),
         dcc.Graph(id='live-update-graph'),
         dcc.Interval(
@@ -25,14 +34,10 @@ app.layout = html.Div(
             interval=1*70000, # in milliseconds
             n_intervals=0
         )
-    ]),
-)
-# app.layout = dbc.Container([
-#     dbc.Row(
-#         dbc.Col()
-#     ),
-#     dbc.Row()
-# ])
+    ]
+
+    ),)
+
 # Multiple components can update everytime interval gets fired.
 @app.callback(Output('live-update-graph', 'figure'),
               Input('interval-component', 'n_intervals'))
@@ -313,4 +318,4 @@ def update_graph_live(n):
     return fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host="0.0.0.0")
+    app.run_server(debug=True, host="0.0.0.0", port = 8000)
