@@ -12,11 +12,9 @@ import numpy as np
 import requests
 import plotly
 import dash
-import time
-# external_stylesheets=[dbc.themes.SUPERHERO]
-app = dash.Dash(__name__,
-                meta_tags=[{'name': 'viewport',
-                            'content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}], update_title='Updating...')
+
+app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}], update_title='Updating...', external_stylesheets=[dbc.themes.CYBORG])
+
 app.title='GPU Monitoring'
 app.layout = html.Div(
     html.Div([
@@ -28,8 +26,13 @@ app.layout = html.Div(
             n_intervals=0
         )
     ]),
-# dbc.Row([Col(children=Graph(id='live-update-graph', figure={}), lg={'size': 6, 'offset': 0, 'order': 'first'}, width=8)])
 )
+# app.layout = dbc.Container([
+#     dbc.Row(
+#         dbc.Col()
+#     ),
+#     dbc.Row()
+# ])
 # Multiple components can update everytime interval gets fired.
 @app.callback(Output('live-update-graph', 'figure'),
               Input('interval-component', 'n_intervals'))
@@ -211,7 +214,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{x} <br>fan : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>fan : %{z} </br>" + "<extra></extra>",
                             name="fan",
                             hoverongaps = False,
                             ygap = 1,
@@ -236,7 +239,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{x} <br>ugpu : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>ugpu : %{z} </br>" + "<extra></extra>",
                             name="ugpu",
                             hoverongaps = False,
                             ygap = 1,
@@ -259,7 +262,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{x} <br>mgpu : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>mgpu : %{z} </br>" + "<extra></extra>",
                             name="mgpu",
                             hoverongaps = False,
                             ygap = 1,
@@ -282,7 +285,7 @@ def update_graph_live(n):
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
                                         [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{x} <br>temp : %{z} </br>",                   
+                            hovertemplate = "IP: %{x} <br>temp : %{z} </br>" + "<extra></extra>",                   
                             name="temp",
                             # hoverongaps = False,
                             ygap = 1,
@@ -295,7 +298,7 @@ def update_graph_live(n):
                             zmin=0,
                             zmax=100,
                             colorscale='RdYlGn_r',
-                            hovertemplate = "IP: %{x} <br>power : %{z} </br>",
+                            hovertemplate = "IP: %{x} <br>power : %{z} </br>" + "<extra></extra>",
                             ygap = 1,
                             xgap = 1,
                             name="power",),
@@ -303,11 +306,11 @@ def update_graph_live(n):
     fig.layout.height = 900
     # fig.layout.width = 1900
     fig.update_layout(title_text = f"last update : {last_update()}")
-    # fig.update_layout(template="plotly")
+    fig.update_layout(template="plotly_dark")
     fig.update_xaxes(visible=False)
     fig.update_yaxes(visible=False)
-    # fig.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)', paper_bgcolor='rgba(0, 0, 0, 0)')
+    # fig.update_layout(plot_bgcolor='rgba(20, 30, 60, 0.9)', paper_bgcolor='rgba(0, 0, 0, 0)')
     return fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host="0.0.0.0", port=8052)
+    app.run_server(debug=True, host="0.0.0.0")
