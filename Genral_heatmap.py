@@ -27,13 +27,7 @@ app.layout = html.Div(
         )
     ]),
 )
-# app.layout = dbc.Container([
-#     dbc.Row(
-#         dbc.Col()
-#     ),
-#     dbc.Row()
-# ])
-# Multiple components can update everytime interval gets fired.
+
 @app.callback(Output('live-update-graph', 'figure'),
               Input('interval-component', 'n_intervals'))
 
@@ -186,8 +180,6 @@ def update_graph_live(n):
             return time
         
         # template ["plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"]
-        # fig.update_layout(template="ggplot2")
-        # olorscale='RdYlGn_r'
 
     fig = make_subplots(rows=2,
                         cols=3,
@@ -287,14 +279,12 @@ def update_graph_live(n):
                                         [1.0, "rgb(170, 0, 40)"]],
                             hovertemplate = "IP: %{x} <br>temp : %{z} </br>" + "<extra></extra>",                   
                             name="temp",
-                            # hoverongaps = False,
                             ygap = 1,
                             xgap = 1,),
                             row=1, col=1)
 
     fig.add_trace(go.Heatmap(z=power_Data(),
                             x=IP_info(),
-                            # y=IP_info(),
                             zmin=0,
                             zmax=100,
                             colorscale='RdYlGn_r',
@@ -303,13 +293,12 @@ def update_graph_live(n):
                             xgap = 1,
                             name="power",),
                             row=1, col=2)
-    fig.layout.height = 900
+    # fig.layout.height = 900
     # fig.layout.width = 1900
     fig.update_layout(title_text = f"last update : {last_update()}")
     fig.update_layout(template="plotly_dark")
     fig.update_xaxes(visible=False)
     fig.update_yaxes(visible=False)
-    # fig.update_layout(plot_bgcolor='rgba(20, 30, 60, 0.9)', paper_bgcolor='rgba(0, 0, 0, 0)')
     return fig
 
 if __name__ == '__main__':
