@@ -1,6 +1,7 @@
 # main.py
 
 from doctest import DONT_ACCEPT_BLANKLINE
+from typing import List
 from fastapi import FastAPI
 from h11 import Data
 from pydantic import BaseModel
@@ -22,7 +23,10 @@ class GPU_DATA(BaseModel):
 @app.post("/")
 async def getting_data(data : GPU_DATA):
     data_dict = dict(data)
-    Datas.append(data_dict)
+    # data_list = list(data)
+    temp = {val : key for key, val in data_dict.items()}
+    res = {val : key for key, val in temp.items()}
+    Datas.append(res)
     print(Datas)
     return { "data" : Datas }
 
