@@ -1,17 +1,16 @@
 # main.py
-
-from doctest import DONT_ACCEPT_BLANKLINE
 from typing import List
 from fastapi import FastAPI
 from h11 import Data
 from pydantic import BaseModel
 from fastapi import Request
+import time
 import uvicorn
 
 app = FastAPI()
 data_per_device = {'id': 1, 'fan': 15, 'ugpu': 30, 'mgpu': 35, 'temp': 68, 'power': 250, 'ip': '192.168.15.171'}
 Datas = []
-
+Datas_time = []
 class GPU_DATA(BaseModel):
     fan : str
     ugpu : str 
@@ -23,18 +22,17 @@ class GPU_DATA(BaseModel):
 @app.post("/")
 async def getting_data(data : GPU_DATA):
     data_dict = dict(data)
-    # data_list = list(data)
-    temp = {val : key for key, val in data_dict.items()}
-    res = {val : key for key, val in temp.items()}
-    Datas.append(res)
+    daty = time.strftime("%d/%m/%Y")
+    timy = time.strftime("%H:%M:%S")
+    data_dict.update({"date": daty})
+    data_dict.update({"time" : timy}) 
+    Datas.append(data_dict)
     print(Datas)
     return { "data" : Datas }
 
 
 @app.get("/api-gpu-monitor")
 async def read_item():
-    # data_set = list(set(Datas))
-    # print(data_set)
     return {"data" : Datas}
 
 if __name__ == '__main__':
