@@ -14,7 +14,7 @@
 # for i in range(len(a)):
 #     leny = len(a)
 #     if i > leny - 1:
-#         if i == leny:
+#         if i == leny:192.168.15.69
 #             if a[i - 1]["ip"] == a[leny - 1]["ip"]:
 #                 del a[i - 1]
 #                 print(a)
@@ -27,3 +27,10 @@
 #         elif b == a[i + 2]["ip"]:
 #             del a[i]
 #             print(a) 
+from pymongo import MongoClient
+
+client = MongoClient(host="192.168.15.69", port=27017)
+db = client["GP"]
+mycol = db["customers"]
+mylist = {"name" : "ali"}
+x = mycol.insert_one(mylist)

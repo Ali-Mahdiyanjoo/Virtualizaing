@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from h11 import Data
 from pydantic import BaseModel
 from fastapi import Request
+from pymongo import MongoClient
 import time
 import uvicorn
 
@@ -11,6 +12,9 @@ app = FastAPI()
 data_per_device = {'id': 1, 'fan': 15, 'ugpu': 30, 'mgpu': 35, 'temp': 68, 'power': 250, 'ip': '192.168.15.171'}
 Datas = []
 Datas_time = []
+client = MongoClient(host="192.168.15.69", port=27017)
+db = client["GPU_MONITORING"]
+mycol = db["DATAS"]
 class GPU_DATA(BaseModel):
     fan : str
     ugpu : str 
@@ -27,6 +31,8 @@ async def getting_data(data : GPU_DATA):
     data_dict.update({"date": daty})
     data_dict.update({"time" : timy}) 
     Datas.append(data_dict)
+    x = mycol.insert_one(Datas)
+    print(x.inserted_id)
     print(Datas)
     return { "data" : Datas }
 
