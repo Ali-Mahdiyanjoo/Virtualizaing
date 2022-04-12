@@ -26,11 +26,32 @@
 #             print(a)
 #         elif b == a[i + 2]["ip"]:
 #             del a[i]
-#             print(a) 
 from pymongo import MongoClient
 
-client = MongoClient(host="192.168.15.69", port=27017)
-db = client["GP"]
-mycol = db["customers"]
-mylist = {"name" : "ali"}
-x = mycol.insert_one(mylist)
+client = MongoClient(host="localhost", port=27017)
+db = client["GPU_MONITORING"]
+mycol = db["DATAS"]
+# ip = "192.168.15.136"
+# myquery = { "ip": { "$eq": ip } }
+
+# for x in mycol.find(myquery):
+#   print(x)
+# from fastapi import FastAPI
+# import uvicorn
+
+# app = FastAPI()
+ 
+# @app.get("/items/{item_id}")
+# async def read_item(item_id):
+#     return {"item_id": item_id}
+
+# if __name__ == '__main__':
+#     uvicorn.run(app, port=8000, host='0.0.0.0')
+myquery = { "ip": { "$eq": '192.168.15.136' } }
+
+dat = []
+
+for x in mycol.find(myquery):
+    dat.append(x)
+
+print(dat)
