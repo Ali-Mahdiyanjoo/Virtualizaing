@@ -29,8 +29,11 @@
 #             print(a) 
 from pymongo import MongoClient
 
-client = MongoClient(host="192.168.15.69", port=27017)
-db = client["GP"]
-mycol = db["customers"]
-mylist = {"name" : "ali"}
-x = mycol.insert_one(mylist)
+client = MongoClient(host="localhost", port=27017)
+db = client["GPU_MONITORING"]
+mycol = db["DATAS"]
+ip = "192.168.15.136"
+myquery = { "ip": { "$eq": ip } }
+
+for x in mycol.find(myquery):
+  print(x)
