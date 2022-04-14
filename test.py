@@ -26,19 +26,6 @@
 #             print(a)
 #         elif b == a[i + 2]["ip"]:
 #             del a[i]
-<<<<<<< HEAD
-#             print(a) 
-from pymongo import MongoClient
-
-client = MongoClient(host="localhost", port=27017)
-db = client["GPU_MONITORING"]
-mycol = db["DATAS"]
-ip = "192.168.15.136"
-myquery = { "ip": { "$eq": ip } }
-
-for x in mycol.find(myquery):
-  print(x)
-=======
 # from pymongo import MongoClient
 
 # client = MongoClient(host="localhost", port=27017)
@@ -119,4 +106,3 @@ for x in mycol.find(myquery):
 #         return time
     
 # print(last_update())
->>>>>>> 6c5d79429fcb8e2b2860c1bdb7477b9109dd6118
