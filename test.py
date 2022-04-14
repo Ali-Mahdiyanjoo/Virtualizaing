@@ -26,6 +26,7 @@
 #             print(a)
 #         elif b == a[i + 2]["ip"]:
 #             del a[i]
+<<<<<<< HEAD
 #             print(a) 
 from pymongo import MongoClient
 
@@ -37,3 +38,85 @@ myquery = { "ip": { "$eq": ip } }
 
 for x in mycol.find(myquery):
   print(x)
+=======
+# from pymongo import MongoClient
+
+# client = MongoClient(host="localhost", port=27017)
+# db = client["GPU_MONITORING"]
+# mycol = db["DATAS"]
+# ip = "192.168.15.136"
+# myquery = { "ip": { "$eq": ip } }
+
+# for x in mycol.find(myquery):
+#   print(x)
+# from fastapi import FastAPI
+# import uvicorn
+
+# app = FastAPI()
+ 
+# @app.get("/items/{item_id}")
+# async def read_item(item_id):
+#     return {"item_id": item_id}
+
+# if __name__ == '__main__':
+#     uvicorn.run(app, port=8000, host='0.0.0.0')
+# myquery = { "ip": { "$eq": '192.168.15.136' } }
+
+# dat = []
+
+# for x in mycol.find(myquery):
+#     dat.append(x)
+
+# print(dat)
+# from datetime import datetime
+# import numpy as np
+# import requests
+# import json
+
+# response = requests.get("http://localhost:8000/api-gpu-monitor-single/")
+# json_response = response.json()
+# json_data = json.loads(json_response)
+# now = datetime.now()
+# current_time = now.strftime("%H:%M:%S")
+# timey = {"current_time" : current_time}
+# json_data.append(timey)
+# for i in range(len(json_data)):
+
+#     def IP_info():#
+#         IP_list = []
+#         len_of_response = len(json_data) - 1
+#         for x in range(len_of_response):
+#             ip = json_data[x]["ip"]
+#             IP_list.append(ip)
+
+#         return IP_list
+
+#     def fan_Data():#
+
+#         fan_list = []
+#         len_of_response = len(json_data) - 1
+#         for x in range(len_of_response):
+#             fan = json_data[x]["fan"]
+#             fan_list.append(fan)
+#         if len(fan_list) % 4 == 0:
+#             fan_data = np.array(fan_list).reshape(-1, 4)
+
+#         else:
+#             len_old = len(fan_list)
+#             while len_old % 4 != 0:
+#                 len_old += 1
+#                 if len_old % 4 == 0:
+#                     len_new = len_old - len(fan_list)
+#                     for i in range(len_new):
+#                         fan_list.append(0)
+#                     fan_data = np.array(fan_list).reshape(-1, 4)
+
+#         return fan_data
+
+#     def last_update():
+#         time = json_data[-1]["current_time"]
+
+#         return time
+    
+# print(last_update())
+>>>>>>> 6c5d79429fcb8e2b2860c1bdb7477b9109dd6118
