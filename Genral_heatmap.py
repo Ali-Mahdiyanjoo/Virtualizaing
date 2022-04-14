@@ -12,6 +12,7 @@ import numpy as np
 import requests
 import plotly
 import dash
+import json
 
 app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}], update_title='Updating...', external_stylesheets=[dbc.themes.CYBORG])
 
@@ -32,37 +33,32 @@ app.layout = html.Div(
               Input('interval-component', 'n_intervals'))
 
 def update_graph_live(n):
-    response = requests.get("https://panel.plusai.cloud/api-gpu-monitor")
+    response = requests.get("http://localhost:8000/api-gpu-monitor-single/")
     json_response = response.json()
-    last_page = json_response["last_page"]
-    for i in range(last_page):
-        i += 1
-        response = requests.get(f"https://panel.plusai.cloud/api-gpu-monitor?page={i}")
-        json_response = response.json()
-        now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
-        timey = {"current_time" : current_time}
-        json_response.update(timey)
-        print(json_response)
+    json_data = json.loads(json_response)
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    timey = {"current_time" : current_time}
+    json_data.append(timey)
+    for i in range(len(json_data)):
 
         def IP_info():#
-
             IP_list = []
-            for x in range(json_response["total"]):
-                ip = json_response["data"][x]["ip"]
+            len_of_response = len(json_data) - 1
+            for x in range(len_of_response):
+                ip = json_data[x]["ip"]
                 IP_list.append(ip)
-                
+
             return IP_list
 
         def fan_Data():#
 
             fan_list = []
-            for x in range(json_response["total"]):
-                    fan = json_response["data"][x]["fan"]
-                    fan_list.append(fan)
-
+            len_of_response = len(json_data) - 1
+            for x in range(len_of_response):
+                fan = json_data[x]["fan"]
+                fan_list.append(fan)
             if len(fan_list) % 4 == 0:
-                fan_list.sort(reverse=True)
                 fan_data = np.array(fan_list).reshape(-1, 4)
 
             else:
@@ -73,7 +69,6 @@ def update_graph_live(n):
                         len_new = len_old - len(fan_list)
                         for i in range(len_new):
                             fan_list.append(0)
-                        fan_list.sort(reverse=True)
                         fan_data = np.array(fan_list).reshape(-1, 4)
 
             return fan_data
@@ -81,12 +76,12 @@ def update_graph_live(n):
         def ugpu_Data():#
 
             ugpu_list = []
-            for x in range(json_response["total"]):
-                ugpu = json_response["data"][x]["ugpu"]
+            len_of_response = len(json_data) - 1
+            for x in range(len_of_response):
+                ugpu = json_data[x]["ugpu"]
                 ugpu_list.append(ugpu)
 
             if len(ugpu_list) % 4 == 0:
-                ugpu_list.sort(reverse=True)
                 ugpu_data = np.array(ugpu_list).reshape(-1, 4)
 
             else:
@@ -97,7 +92,6 @@ def update_graph_live(n):
                         len_new = len_old - len(ugpu_list)
                         for i in range(len_new):
                             ugpu_list.append(0)
-                ugpu_list.sort(reverse=True)
                 ugpu_data = np.array(ugpu_list).reshape(-1, 4)
 
             return ugpu_data
@@ -105,12 +99,12 @@ def update_graph_live(n):
         def mgpu_Data():#
 
             mgpu_list = []
-            for x in range(json_response["total"]):
-                mgpu = json_response["data"][x]["mgpu"]
+            len_of_response = len(json_data) - 1
+            for x in range(len_of_response):
+                mgpu = json_data[x]["mgpu"]
                 mgpu_list.append(mgpu)
 
             if len(mgpu_list) % 4 == 0:
-                mgpu_list.sort(reverse=True)
                 mgpu_data = np.array(mgpu_list).reshape(-1, 4)
 
             else:
@@ -121,7 +115,6 @@ def update_graph_live(n):
                         len_new = len_old - len(mgpu_list)
                         for i in range(len_new):
                             mgpu_list.append(0)
-                mgpu_list.sort(reverse=True)
                 mgpu_data = np.array(mgpu_list).reshape(-1, 4)
 
             return mgpu_data
@@ -129,12 +122,12 @@ def update_graph_live(n):
         def temp_Data():#
 
             temp_list = []
-            for x in range(json_response["total"]):
-                temp = json_response["data"][x]["temp"]
+            len_of_response = len(json_data) - 1
+            for x in range(len_of_response):
+                temp = json_data[x]["temp"]
                 temp_list.append(temp)
 
             if len(temp_list) % 4 == 0:
-                temp_list.sort(reverse=True)
                 temp_data = np.array(temp_list).reshape(-1, 4)
 
             else:
@@ -145,7 +138,6 @@ def update_graph_live(n):
                         len_new = len_old - len(temp_list)
                         for i in range(len_new):
                             temp_list.append(0)        
-                temp_list.sort(reverse=True)
                 temp_data = np.array(temp_list).reshape(-1, 4)
 
             return temp_data
@@ -153,12 +145,12 @@ def update_graph_live(n):
         def power_Data():
 
             power_list = []
-            for x in range(json_response["total"]):
-                power = json_response["data"][x]["power"]
+            len_of_response = len(json_data) - 1
+            for x in range(len_of_response):
+                power = json_data[x]["power"]
                 power_list.append(power)
 
             if len(power_list) % 4 == 0:
-                power_list.sort(reverse=True)
                 power_data = np.array(power_list).reshape(-1, 4)
 
             else:
@@ -169,13 +161,12 @@ def update_graph_live(n):
                         len_new = len_old - len(power_list)
                         for i in range(len_new):
                             power_list.append(0)        
-                power_list.sort(reverse=True)
                 power_data = np.array(power_list).reshape(-1, 4)
 
             return power_data
 
         def last_update():
-            time = json_response["current_time"]
+            time = json_data[-1]["current_time"]
 
             return time
         
