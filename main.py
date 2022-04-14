@@ -7,9 +7,9 @@ import time
 import uvicorn
 import json
 <<<<<<< HEAD
-=======
 from datetime import datetime
->>>>>>> 6c5d79429fcb8e2b2860c1bdb7477b9109dd6118
+=======
+>>>>>>> 9e2366991ec9418edb540517fc7d62b486ae4801
 from bson import ObjectId
 
 app = FastAPI()
@@ -43,6 +43,32 @@ async def getting_data(data : GPU_DATA):
     data_dict.update({"date": daty})
     data_dict.update({"time" : timy}) 
 <<<<<<< HEAD
+    x = mycol.insert_one(data_dict)
+    y = JSONEncoder().encode(data_dict)
+    return y
+
+# 2 done
+@app.post("/realtime")
+async def getting_data(data : GPU_DATA):
+    data_dict = dict(data)
+    IP = data_dict["ip"]
+    IP_dict = mycol_single.find_one({"ip": IP}) # it will go to see there is a document with this IP
+    if IP_dict is None:
+        mycol_single.insert_one(data_dict)
+        x = JSONEncoder().encode(data_dict)
+        return x
+    else:
+        mycol_single.update_one({"ip": IP}, {"$set": data_dict})
+        x = JSONEncoder().encode(data_dict)
+        return x
+
+# 3
+@app.get("/api-gpu-monitor/{ip_address}")
+async def read_item(ip_address):
+    myquery = { "ip": { "$eq": ip_address } }
+    dat = []
+
+=======
     # Datas.append(data_dict)
     x = mycol.insert_one(data_dict)
     print(x.inserted_id)
@@ -73,63 +99,19 @@ async def read_item(ip_address):
     # print(myquery)
     dat = []
 
-=======
-    x = mycol.insert_one(data_dict)
-    y = JSONEncoder().encode(data_dict)
-    return y
-
-# 2 done
-@app.post("/realtime")
-async def getting_data(data : GPU_DATA):
-    data_dict = dict(data)
-    IP = data_dict["ip"]
-    IP_dict = mycol_single.find_one({"ip": IP}) # it will go to see there is a document with this IP
-    if IP_dict is None:
-        mycol_single.insert_one(data_dict)
-        x = JSONEncoder().encode(data_dict)
-        return x
-    else:
-        mycol_single.update_one({"ip": IP}, {"$set": data_dict})
-        x = JSONEncoder().encode(data_dict)
-        return x
-
-# 3
-@app.get("/api-gpu-monitor/{ip_address}")
-async def read_item(ip_address):
-    myquery = { "ip": { "$eq": ip_address } }
-    dat = []
-
->>>>>>> 6c5d79429fcb8e2b2860c1bdb7477b9109dd6118
+>>>>>>> 9e2366991ec9418edb540517fc7d62b486ae4801
     for x in mycol.find(myquery):
         dat.append(x)
     adt_dict = {}
     adt_dict.update({"data" : dat})
-<<<<<<< HEAD
-    print(type(adt_dict))
-    return adt_dict
-
-=======
     x = JSONEncoder().encode(adt_dict)
     return x
 
 # 4 done
->>>>>>> 6c5d79429fcb8e2b2860c1bdb7477b9109dd6118
 @app.get("/api-gpu-monitor-single/")
 async def read_item():
     myquery = { "ip": { "$regex" : "^192."} }
     dat = []
-<<<<<<< HEAD
-    for x in mycol_single.find(myquery):
-        dat.append(x)
-        print(x)
-
-    # for x in mycol.find(myquery):
-    #     dat.append(x)
-    # adt_dict = {}
-    # adt_dict.update({"data" : dat})
-    # print(type(adt_dict))
-    # return adt_dict
-=======
 
     for x in mycol_single.find(myquery):
         dat.append(x)
@@ -139,7 +121,6 @@ async def read_item():
     return x
 
 
->>>>>>> 6c5d79429fcb8e2b2860c1bdb7477b9109dd6118
 
 if __name__ == '__main__':
     uvicorn.run(app, port=8000, host='0.0.0.0')
