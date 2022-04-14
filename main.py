@@ -6,10 +6,7 @@ from pymongo import MongoClient
 import time
 import uvicorn
 import json
-<<<<<<< HEAD
 from datetime import datetime
-=======
->>>>>>> 9e2366991ec9418edb540517fc7d62b486ae4801
 from bson import ObjectId
 
 app = FastAPI()
@@ -42,7 +39,6 @@ async def getting_data(data : GPU_DATA):
     timy = time.strftime("%H:%M:%S")
     data_dict.update({"date": daty})
     data_dict.update({"time" : timy}) 
-<<<<<<< HEAD
     x = mycol.insert_one(data_dict)
     y = JSONEncoder().encode(data_dict)
     return y
@@ -62,44 +58,12 @@ async def getting_data(data : GPU_DATA):
         x = JSONEncoder().encode(data_dict)
         return x
 
-# 3
+# 3 done
 @app.get("/api-gpu-monitor/{ip_address}")
 async def read_item(ip_address):
     myquery = { "ip": { "$eq": ip_address } }
     dat = []
 
-=======
-    # Datas.append(data_dict)
-    x = mycol.insert_one(data_dict)
-    print(x.inserted_id)
-    print(data_dict)
-    return { "data" : Datas }
-
-@app.post("/realtime")
-async def getting_data(data : GPU_DATA):
-    data_dict = dict(data)
-    IP = data_dict["ip"]
-    IP_dict = mycol_single.find_one({"ip": IP})
-    IP_x = IP_dict["ip"]
-    if IP == IP_x:
-        mycol_single.delete_one({ "ip": IP })
-        mycol_single.insert_one(data_dict)
-        print("fuck")
-        x = JSONEncoder().encode(data_dict)
-        return x
-    else:
-        mycol_single.insert_one(data_dict)
-        print("fuck_else")
-        x = JSONEncoder().encode(data_dict)
-        return x
-
-@app.get("/api-gpu-monitor/{ip_address}")
-async def read_item(ip_address):
-    myquery = { "ip": { "$eq": ip_address } }
-    # print(myquery)
-    dat = []
-
->>>>>>> 9e2366991ec9418edb540517fc7d62b486ae4801
     for x in mycol.find(myquery):
         dat.append(x)
     adt_dict = {}
