@@ -84,7 +84,18 @@ async def read_item():
     x = JSONEncoder().encode(dat)
     return x
 
+# 5 done
+@app.get("/get_IP_list/")
+async def read_item():
+    IPs = []
 
+    for x in mycol.find({ "ip": { "$regex" : "^192."} }, {"_id": 0, "date": 0, "time": 0, "fan": 0, "ugpu": 0, "mgpu": 0, "temp": 0, "power": 0}):
+        IPs.append(x.get("ip"))
+
+    adt_dict = {}
+    adt_dict.update({"IPs" : list(set(IPs))})
+    x = JSONEncoder().encode(adt_dict)
+    return x
 
 if __name__ == '__main__':
     uvicorn.run(app, port=8000, host='0.0.0.0')

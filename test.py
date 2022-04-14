@@ -31,11 +31,13 @@
 # client = MongoClient(host="localhost", port=27017)
 # db = client["GPU_MONITORING"]
 # mycol = db["DATAS"]
-# ip = "192.168.15.136"
-# myquery = { "ip": { "$eq": ip } }
+# IPs = []
 
-# for x in mycol.find(myquery):
-#   print(x)
+# for x in mycol.find({ "ip": { "$regex" : "^192."} }, {"_id": 0, "date": 0, "time": 0, "fan": 0, "ugpu": 0, "mgpu": 0, "temp": 0, "power": 0}):
+#   IPs.append(x.get("ip"))
+# adt_dict = {}
+# adt_dict.update({"IPs" : list(set(IPs))})
+# print(adt_dict)
 # from fastapi import FastAPI
 # import uvicorn
 
@@ -55,10 +57,10 @@
 #     dat.append(x)
 
 # print(dat)
-# from datetime import datetime
-# import numpy as np
-# import requests
-# import json
+from datetime import datetime
+import numpy as np
+import requests
+import json
 
 # response = requests.get("http://localhost:8000/api-gpu-monitor-single/")
 # json_response = response.json()
@@ -106,3 +108,22 @@
 #         return time
     
 # print(last_update())
+# response = requests.get("http://localhost:8000/get_IP_list/")
+# json_response = response.json()
+# json_data = json.loads(json_response)
+# IP_of_machins = json_data["IPs"]
+# for i in IP_of_machins:
+response = requests.get("http://localhost:8000/api-gpu-monitor/192.168.15.136")
+json_response = response.json()
+json_data = json.loads(json_response)
+# {'data': [{'_id': '6258417b230021448afac6ad', 'fan': '30', 'ugpu': '0', 'mgpu': '10', 'temp': '33', 'power': '3.85', 'ip': '192.168.15.136', 'date': '14/04/2022', 'time': '20:14:59'}]}
+
+print(json_data[1:])
+# import plotly.graph_objects as go
+# import pandas as pd
+
+
+# fig = go.Figure(go.Scatter(
+#     x = df['Date'],
+#     y = df['mavg']
+# ))
