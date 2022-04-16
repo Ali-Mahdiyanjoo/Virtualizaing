@@ -6,7 +6,6 @@ from pymongo import MongoClient
 import time
 import uvicorn
 import json
-from datetime import datetime
 from bson import ObjectId
 
 app = FastAPI()
@@ -35,10 +34,9 @@ class GPU_DATA(BaseModel):
 @app.post("/")
 async def getting_data(data : GPU_DATA):
     data_dict = dict(data)
-    daty = time.strftime("%d/%m/%Y")
+    daty = time.strftime("%Y-%m-%d")
     timy = time.strftime("%H:%M:%S")
-    data_dict.update({"date": daty})
-    data_dict.update({"time" : timy}) 
+    data_dict.update({"date": daty + " " + timy})
     x = mycol.insert_one(data_dict)
     y = JSONEncoder().encode(data_dict)
     return y

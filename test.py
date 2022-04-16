@@ -112,18 +112,94 @@ import json
 # json_response = response.json()
 # json_data = json.loads(json_response)
 # IP_of_machins = json_data["IPs"]
+# print(IP_of_machins)
 # for i in IP_of_machins:
-response = requests.get("http://localhost:8000/api-gpu-monitor/192.168.15.136")
-json_response = response.json()
-json_data = json.loads(json_response)
-# {'data': [{'_id': '6258417b230021448afac6ad', 'fan': '30', 'ugpu': '0', 'mgpu': '10', 'temp': '33', 'power': '3.85', 'ip': '192.168.15.136', 'date': '14/04/2022', 'time': '20:14:59'}]}
+# response = requests.get("http://localhost:8000/api-gpu-monitor/192.168.15.136")
+# json_response = response.json()
+# json_data = json.loads(json_response)
+# now = datetime.now()
+# current_time = now.strftime("%H:%M:%S")
+# timey = {"current_time" : current_time}
+# json_data.update(timey)
+# for i in range(len(json_data["data"])):
 
-print(json_data[1:])
+#     def IP_info():#
+#         IP_list = []
+#         for x in range(len(json_data["data"])):
+#             ip = json_data["data"][x]["ip"]
+#             IP_list.append(ip)
+
+#         return list(set(IP_list))
+
+# # print(IP_info())
+#     def time_Data():#
+
+#         time_list = []
+#         for x in range(len(json_data["data"])):
+#             time = json_data["data"][x]["time"]
+#             time_list.append(time)
+#         if len(time_list) % 4 == 0:
+#             time_data = np.array(time_list).reshape(-1, 4)
+
+#         else:
+#             len_old = len(time_list)
+#             while len_old % 4 != 0:
+#                 len_old += 1
+#                 if len_old % 4 == 0:
+#                     len_new = len_old - len(time_list)
+#                     for i in range(len_new):
+#                         time_list.append(0)
+#                     time_data = np.array(time_list).reshape(-1, 4)
+
+#         return time_data
+        
+#     def date_Data():#
+
+#         date_list = []
+#         for x in range(len(json_data["data"])):
+#             date = json_data["data"][x]["date"]
+#             date_list.append(date)
+#         if len(date_list) % 4 == 0:
+#             date_data = np.array(date_list).reshape(-1, 4)
+
+#         else:
+#             len_old = len(date_list)
+#             while len_old % 4 != 0:
+#                 len_old += 1
+#                 if len_old % 4 == 0:
+#                     len_new = len_old - len(date_list)
+#                     for i in range(len_new):
+#                         date_list.append(0)
+#                     date_data = np.array(date_list).reshape(-1, 4)
+
+#         return date_data
+
+# print(date_Data())
+# def last_update():
+#     time = json_data["current_time"]
+
+#     return time
+# print(last_update())
 # import plotly.graph_objects as go
 # import pandas as pd
-
 
 # fig = go.Figure(go.Scatter(
 #     x = df['Date'],
 #     y = df['mavg']
 # ))
+# import plotly.express as px
+# import plotly.graph_objs as go
+# fig = go.Figure(data=go.Scatter(x=df_month['month'].astype(dtype=str), 
+#                         y=df_month['counts'],
+#                         marker_color='indianred', text="counts"))
+
+# fig.update_layout({"title": 'Tweets about Malioboro from Jan 2020 to Jan 2021',
+#                    "xaxis": {"title":"Months"},
+#                    "yaxis": {"title":"Total tweets"},
+#                    "showlegend": False})
+# fig.write_image("by-month.png",format="png", width=1000, height=600, scale=3)
+# fig.show()
+import time
+daty = time.strftime("%d-%m-%Y")
+timy = time.strftime("%H:%M:%S")
+print(daty + " " + timy)
