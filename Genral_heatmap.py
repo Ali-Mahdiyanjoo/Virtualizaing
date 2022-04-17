@@ -6,15 +6,16 @@ from datetime import datetime
 from time import sleep, time
 from dash import dcc, html
 from inspect import trace
-import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
+import plotly.graph_objs as go
 import numpy as np
 import requests
 import plotly
 import dash
 import json
 
-app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}], update_title='Updating...', external_stylesheets=[dbc.themes.CYBORG])
+app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}],
+                                     update_title='Updating...', external_stylesheets=[dbc.themes.CYBORG])
 
 app.title='GPU Monitoring'
 app.layout = html.Div(
@@ -35,14 +36,14 @@ app.layout = html.Div(
 def update_graph_live(n):
     response = requests.get("http://localhost:8000/api-gpu-monitor-single/")
     json_response = response.json()
-    json_data = json.loads(json_response)
+    json_data = json.loads(json_response) # save the data in json format
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     timey = {"current_time" : current_time}
-    json_data.append(timey)
+    json_data.append(timey) # add the current time to the json data
     for i in range(len(json_data)):
 
-        def IP_info():#
+        def IP_info():# get the IP list
             IP_list = []
             len_of_response = len(json_data) - 1
             for x in range(len_of_response):
@@ -51,17 +52,17 @@ def update_graph_live(n):
 
             return IP_list
 
-        def fan_Data():#
+        def fan_Data():# get the fan data
 
             fan_list = []
             len_of_response = len(json_data) - 1
             for x in range(len_of_response):
                 fan = json_data[x]["fan"]
                 fan_list.append(fan)
-            if len(fan_list) % 4 == 0:
+            if len(fan_list) % 4 == 0: # if the length of the fan list is divisible by 4, then we can plot the data
                 fan_data = np.array(fan_list).reshape(-1, 4)
 
-            else:
+            else: # if the length of the fan list is not divisible by 4, then we cannot plot the data so we should insert fake data
                 len_old = len(fan_list)
                 while len_old % 4 != 0:
                     len_old += 1
@@ -73,7 +74,7 @@ def update_graph_live(n):
 
             return fan_data
 
-        def ugpu_Data():#
+        def ugpu_Data():# get the ugpu data
 
             ugpu_list = []
             len_of_response = len(json_data) - 1
@@ -96,7 +97,7 @@ def update_graph_live(n):
 
             return ugpu_data
 
-        def mgpu_Data():#
+        def mgpu_Data():# get the mgpu data
 
             mgpu_list = []
             len_of_response = len(json_data) - 1
@@ -119,7 +120,7 @@ def update_graph_live(n):
 
             return mgpu_data
 
-        def temp_Data():#
+        def temp_Data():# get the temperature data
 
             temp_list = []
             len_of_response = len(json_data) - 1
@@ -142,7 +143,7 @@ def update_graph_live(n):
 
             return temp_data
 
-        def power_Data():
+        def power_Data():# get the power data
 
             power_list = []
             len_of_response = len(json_data) - 1
@@ -165,26 +166,23 @@ def update_graph_live(n):
 
             return power_data
 
-        def last_update():
+        def last_update():# get the last update time of the data when the data is readed
             time = json_data[-1]["current_time"]
 
             return time
         
-        # template ["plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"]
-
     fig = make_subplots(rows=2,
                         cols=3,
-                        # specs=[[{}, {}],
                         horizontal_spacing=0.05,
                         vertical_spacing=0.075,
                         start_cell='bottom-left',
                         column_titles=['Fan', 'ugpu', 'mgpu'],
                         subplot_titles=['temp', 'power'])
 
-    fig.add_trace(go.Heatmap(z=fan_Data(),
-                            x = IP_info(),
-                            zmin=0,
-                            zmax=100,
+    fig.add_trace(go.Heatmap(z=fan_Data(), # data it self
+                            x = IP_info(), # data for hover
+                            zmin=0, # min value of the data
+                            zmax=100, # max value of the data
                             colorscale=[[0.0, "rgb(0, 115, 0)"],
                                         [0.1, "rgb(40, 155, 80)"],
                                         [0.2, "rgb(160, 220, 110)"],
@@ -196,16 +194,15 @@ def update_graph_live(n):
                                         [0.7, "rgb(250,110,70)"],
                                         [0.8, "rgb(220,50, 40)"],
                                         [0.9, "rgb(220,50, 40)"],
-                                        [1.0, "rgb(170, 0, 40)"]],
-                            hovertemplate = "IP: %{x} <br>fan : %{z} </br>" + "<extra></extra>",
+                                        [1.0, "rgb(170, 0, 40)"]], # color of the data for bar
+                            hovertemplate = "IP: %{x} <br>fan : %{z} </br>" + "<extra></extra>", # hover text format
                             name="fan",
-                            hoverongaps = False,
-                            ygap = 1,
+                            hoverongaps = False, # if the data is missing, we should not show the hover text
+                            ygap = 1, # the gap between the bar
                             xgap = 1),
-                            row=2, col=1)
+                            row=2, col=1) # the position of the bar
 
-                            # colorbar = {"title": "speed"}
-    
+
     fig.add_trace(go.Heatmap(z=ugpu_Data(),
                             x = IP_info(),
                             zmin=0,
@@ -270,6 +267,7 @@ def update_graph_live(n):
                                         [1.0, "rgb(170, 0, 40)"]],
                             hovertemplate = "IP: %{x} <br>temp : %{z} </br>" + "<extra></extra>",                   
                             name="temp",
+                            hoverongaps = False,
                             ygap = 1,
                             xgap = 1,),
                             row=1, col=1)
@@ -280,17 +278,18 @@ def update_graph_live(n):
                             zmax=100,
                             colorscale='RdYlGn_r',
                             hovertemplate = "IP: %{x} <br>power : %{z} </br>" + "<extra></extra>",
+                            name="power",
+                            hoverongaps = False,
                             ygap = 1,
                             xgap = 1,
                             name="power",),
                             row=1, col=2)
-    # fig.layout.height = 900
-    # fig.layout.width = 1900
-    fig.update_layout(title_text = f"last update : {last_update()}")
-    fig.update_layout(template="plotly_dark")
-    fig.update_xaxes(visible=False)
-    fig.update_yaxes(visible=False)
+
+    fig.update_layout(title_text = f"last update : {last_update()}") # title of the graph and last update time
+    fig.update_layout(template="plotly_dark") # dark theme
+    fig.update_xaxes(visible=False) # hide the x axis
+    fig.update_yaxes(visible=False) # hide the y axis
     return fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host="0.0.0.0")
+    app.run_server(debug=True, host="0.0.0.0") # run the server on port 8050
