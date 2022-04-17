@@ -23,7 +23,7 @@ app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=devic
 
 app.title='GPU Monitoring'
 fig_dropdown = html.Div([
-    dcc.Dropdown(options=[{'label': i, 'value': i} for i in IP_of_machins],value=IP_of_machins[1] ,id='dropdown', placeholder="Select IP")])
+    dcc.Dropdown(options=[{'label': i, 'value': i} for i in IP_of_machins],value=IP_of_machins[0] ,id='dropdown', placeholder="Select IP")])
 
 fig_plot = html.Div(
     html.Div([
@@ -47,34 +47,14 @@ def update_graph_live(fig_dropdown):
     json_data.update(timey)
     for i in range(len(json_data["data"])):
 
-        def IP_info():#
-            IP_list = []
-            for x in range(len(json_data["data"])):
-                ip = json_data["data"][x]["ip"]
-                IP_list.append(ip)
-
-            return list(set(IP_list))
-
         def fan_Data():#
 
             fan_list = []
             for x in range(len(json_data["data"])):
                 fan = json_data["data"][x]["fan"]
                 fan_list.append(fan)
-            if len(fan_list) % 4 == 0:
-                fan_data = np.array(fan_list).reshape(-1, 4)
 
-            else:
-                len_old = len(fan_list)
-                while len_old % 4 != 0:
-                    len_old += 1
-                    if len_old % 4 == 0:
-                        len_new = len_old - len(fan_list)
-                        for i in range(len_new):
-                            fan_list.append(0)
-                        fan_data = np.array(fan_list).reshape(-1, 4)
-
-            return fan_data
+            return fan_list
 
         def ugpu_Data():#
 
@@ -83,20 +63,7 @@ def update_graph_live(fig_dropdown):
                 ugpu = json_data["data"][x]["ugpu"]
                 ugpu_list.append(ugpu)
 
-            if len(ugpu_list) % 4 == 0:
-                ugpu_data = np.array(ugpu_list).reshape(-1, 4)
-
-            else:
-                len_old = len(ugpu_list)
-                while len_old % 4 != 0:
-                    len_old += 1
-                    if len_old % 4 == 0:
-                        len_new = len_old - len(ugpu_list)
-                        for i in range(len_new):
-                            ugpu_list.append(0)
-                ugpu_data = np.array(ugpu_list).reshape(-1, 4)
-
-            return ugpu_data
+            return ugpu_list
 
         def mgpu_Data():#
 
@@ -104,21 +71,8 @@ def update_graph_live(fig_dropdown):
             for x in range(len(json_data["data"])):
                 mgpu = json_data["data"][x]["mgpu"]
                 mgpu_list.append(mgpu)
-
-            if len(mgpu_list) % 4 == 0:
-                mgpu_data = np.array(mgpu_list).reshape(-1, 4)
-
-            else:
-                len_old = len(mgpu_list)
-                while len_old % 4 != 0:
-                    len_old += 1
-                    if len_old % 4 == 0:
-                        len_new = len_old - len(mgpu_list)
-                        for i in range(len_new):
-                            mgpu_list.append(0)
-                mgpu_data = np.array(mgpu_list).reshape(-1, 4)
-
-            return mgpu_data
+                
+            return mgpu_list
 
         def temp_Data():#
 
@@ -127,83 +81,25 @@ def update_graph_live(fig_dropdown):
                 temp = json_data["data"][x]["temp"]
                 temp_list.append(temp)
 
-            if len(temp_list) % 4 == 0:
-                temp_data = np.array(temp_list).reshape(-1, 4)
-
-            else:
-                len_old = len(temp_list)
-                while len_old % 4 != 0:
-                    len_old += 1
-                    if len_old % 4 == 0:
-                        len_new = len_old - len(temp_list)
-                        for i in range(len_new):
-                            temp_list.append(0)        
-                temp_data = np.array(temp_list).reshape(-1, 4)
-
-            return temp_data
+            return temp_list
 
         def power_Data():
 
             power_list = []
             for x in range(len(json_data["data"])):
                 power = json_data["data"][x]["power"]
-                power_list.append(power)
+                power_list.append(float(power))
 
-            if len(power_list) % 4 == 0:
-                power_data = np.array(power_list).reshape(-1, 4)
+            return power_list
 
-            else:
-                len_old = len(power_list)
-                while len_old % 4 != 0:
-                    len_old += 1
-                    if len_old % 4 == 0:
-                        len_new = len_old - len(power_list)
-                        for i in range(len_new):
-                            power_list.append(0)        
-                power_data = np.array(power_list).reshape(-1, 4)
-
-            return power_data
         def date_Data():#
 
             date_list = []
             for x in range(len(json_data["data"])):
                 date = json_data["data"][x]["date"]
                 date_list.append(date)
-            if len(date_list) % 4 == 0:
-                date_data = np.array(date_list).reshape(-1, 4)
 
-            else:
-                len_old = len(date_list)
-                while len_old % 4 != 0:
-                    len_old += 1
-                    if len_old % 4 == 0:
-                        len_new = len_old - len(date_list)
-                        for i in range(len_new):
-                            date_list.append(0)
-                        date_data = np.array(date_list).reshape(-1, 4)
-
-            return date_data
-
-        def time_Data():#
-
-            time_list = []
-            for x in range(len(json_data["data"])):
-                time = json_data["data"][x]["time"]
-                time_list.append(time)
-            if len(time_list) % 4 == 0:
-                time_data = np.array(time_list).reshape(-1, 4)
-
-            else:
-                len_old = len(time_list)
-                while len_old % 4 != 0:
-                    len_old += 1
-                    if len_old % 4 == 0:
-                        len_new = len_old - len(time_list)
-                        for i in range(len_new):
-                            time_list.append(0)
-                        time_data = np.array(time_list).reshape(-1, 4)
-
-            return time_data
+            return date_list
 
         def last_update():
             time = json_data["current_time"]
@@ -213,47 +109,44 @@ def update_graph_live(fig_dropdown):
     fig = make_subplots(rows=1, cols=1, shared_xaxes=True)
 
     fig.add_trace(go.Scatter(y = fan_Data(),
-                            x = time_Data(),
-                            mode="lines",
+                            x = date_Data(),
+                            mode="lines + markers",
                             hovertemplate = "Fan : %{y} <br>Time : %{x} </br><extra></extra>",
                             name="fan"),
                             row=1, col=1)
     
     fig.add_trace(go.Scatter(y = ugpu_Data(),
-                            x = time_Data(),
-                            mode="lines",
+                            x = date_Data(),
+                            mode="lines + markers",
                             hovertemplate = "Ugpu : %{y} <br>Time : %{x} </br><extra></extra>",
                             name="ugpu"),
                             row=1, col=1)
 
     fig.add_trace(go.Scatter(y = mgpu_Data(),
-                            x = time_Data(),
-                            mode="lines",
+                            x = date_Data(),
+                            mode="lines + markers",
                             hovertemplate = "Mgpu : %{y} <br>Time : %{x} </br><extra></extra>",
                             name="mgpu"),
                             row=1, col=1)
 
     fig.add_trace(go.Scatter(y = temp_Data(),
-                            x = time_Data(),
-                            mode="lines",
+                            x = date_Data(),
+                            mode="lines + markers",
                             hovertemplate = "Temp : %{y} <br>Time : %{x} </br><extra></extra>",                   
                             name="temp"),
                             row=1, col=1)
 
     fig.add_trace(go.Scatter(y = power_Data(),
-                            x = time_Data(),
-                            mode="lines",
+                            x = date_Data(),
+                            mode="lines + markers",
                             hovertemplate = "Power : %{y} <br>Time : %{x} </br><extra></extra>",
                             name="power"),
                             row=1, col=1)
     
-    # fig.layout.height = 900
-    fig.layout.width = 1900
-    # fig.update_layout(yaxis=dict(range=[0, 100]))
     fig.update_layout(title_text = f"last update : {last_update()}")
     fig.update_layout(template="plotly_dark")
-    fig.update_layout({"xaxis": {"title":"Time"},
-                   "showlegend": False})
+    fig.update_layout({"xaxis": {"title":"Time"}})
+
     return fig
 
 if __name__ == '__main__':
