@@ -7,6 +7,9 @@ import time
 import uvicorn
 import json
 from bson import ObjectId
+from datetime import timedelta
+from datetime import datetime
+from datetime import datetime as dtt
 
 app = FastAPI()
 Datas = []
@@ -45,8 +48,18 @@ async def getting_data(data : GPU_DATA):
 @app.post("/realtime")
 async def getting_data(data : GPU_DATA):
     data_dict = dict(data)
+    timy = datetime.now().time()
+    t1 = timedelta(hours=timy.hour, minutes=timy.minute)
+    data_dict.update({"time": str(t1)})
     IP = data_dict["ip"]
     IP_dict = mycol_single.find_one({"ip": IP}) # it will go to see there is a document with this IP
+    for x in mycol_single.find({"ip": { "$regex" : "^192."}}):
+        end = x["time"]
+        tim = datetime.now().time()
+        t2 = timedelta(hours=tim.hour, minutes=tim.minute)
+        time_only = dtt.strptime(str(t2), "%H:%M:%S") - dtt.strptime(end, "%H:%M:%S")
+        if str(time_only) == "0:10:00":
+            mycol_single.delete_one({"ip": IP})
     if IP_dict is None:
         mycol_single.insert_one(data_dict)
         x = JSONEncoder().encode(data_dict)
@@ -72,10 +85,9 @@ async def read_item(ip_address):
 # 4 done
 @app.get("/api-gpu-monitor-single/")
 async def read_item():
-    myquery = { "ip": { "$regex" : "^192."} }
     dat = []
 
-    for x in mycol_single.find(myquery):
+    for x in mycol_single.find({"ip": { "$regex" : "^192."}}):
         dat.append(x)
     adt_dict = {}
     adt_dict.update({"data" : dat})

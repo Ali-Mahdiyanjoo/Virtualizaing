@@ -58,6 +58,7 @@
 
 # print(dat)
 from datetime import datetime
+from time import sleep
 import numpy as np
 import requests
 import json
@@ -199,7 +200,17 @@ import json
 #                    "showlegend": False})
 # fig.write_image("by-month.png",format="png", width=1000, height=600, scale=3)
 # fig.show()
-import time
-daty = time.strftime("%d-%m-%Y")
-timy = time.strftime("%H:%M:%S")
-print(daty + " " + timy)
+# from datetime import datetime as dtt
+# from datetime import timedelta
+# import time
+
+# timy = datetime.now().time()
+# time.sleep(2)
+# tim = datetime.now().time()
+# t1 = timedelta(hours=timy.hour, minutes=timy.minute, seconds=timy.second)
+# t2 = timedelta(hours=tim.hour, minutes=tim.minute, seconds=tim.second)
+# print(t1)
+# print(t2)
+# time_only = dtt.strptime(str(t2), "%H:%M:%S") - dtt.strptime(str(t1), "%H:%M:%S")
+
+# print(time_only)
