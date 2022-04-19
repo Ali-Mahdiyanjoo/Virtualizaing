@@ -108,6 +108,13 @@ def update_graph_live(fig_dropdown):
         
     fig = make_subplots(rows=1, cols=1, shared_xaxes=True)
 
+    fig.add_trace(go.Scatter(y = power_Data(),
+                            x = date_Data(),
+                            mode="lines + markers",
+                            hovertemplate = "Power : %{y} <br>Time : %{x} </br><extra></extra>",
+                            name="power"),
+                            row=1, col=1)
+
     fig.add_trace(go.Scatter(y = fan_Data(),
                             x = date_Data(),
                             mode="lines + markers",
@@ -135,14 +142,7 @@ def update_graph_live(fig_dropdown):
                             hovertemplate = "Temp : %{y} <br>Time : %{x} </br><extra></extra>",                   
                             name="temp"),
                             row=1, col=1)
-
-    fig.add_trace(go.Scatter(y = power_Data(),
-                            x = date_Data(),
-                            mode="lines + markers",
-                            hovertemplate = "Power : %{y} <br>Time : %{x} </br><extra></extra>",
-                            name="power"),
-                            row=1, col=1)
-    
+    fig.update_layout(height = 900)
     fig.update_layout(title_text = f"last update : {last_update()}")
     fig.update_layout(template="plotly_dark")
     fig.update_layout({"xaxis": {"title":"Time"}})

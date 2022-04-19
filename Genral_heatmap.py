@@ -281,8 +281,7 @@ def update_graph_live(n):
                             name="power",
                             hoverongaps = False,
                             ygap = 1,
-                            xgap = 1,
-                            name="power",),
+                            xgap = 1,),
                             row=1, col=2)
 
     fig.update_layout(title_text = f"last update : {last_update()}") # title of the graph and last update time
@@ -292,4 +291,4 @@ def update_graph_live(n):
     return fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host="0.0.0.0") # run the server on port 8050
+    app.run_server(debug=True, host="0.0.0.0", port = 6969) # run the server on port 8050
