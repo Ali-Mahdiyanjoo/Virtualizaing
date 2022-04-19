@@ -14,8 +14,10 @@ import plotly
 import dash
 import json
 
+# , external_stylesheets=[dbc.themes.CYBORG]
+
 app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}],
-                                     update_title='Updating...', external_stylesheets=[dbc.themes.CYBORG])
+                                     update_title='Updating...')
 
 app.title='GPU Monitoring'
 app.layout = html.Div(
@@ -284,6 +286,7 @@ def update_graph_live(n):
                             xgap = 1,),
                             row=1, col=2)
 
+    fig.update_layout(height = 1080)
     fig.update_layout(title_text = f"last update : {last_update()}") # title of the graph and last update time
     fig.update_layout(template="plotly_dark") # dark theme
     fig.update_xaxes(visible=False) # hide the x axis
@@ -291,4 +294,4 @@ def update_graph_live(n):
     return fig
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host="0.0.0.0", port = 6969) # run the server on port 8050
+    app.run_server(debug=True, host="0.0.0.0") # run the server on port 8050

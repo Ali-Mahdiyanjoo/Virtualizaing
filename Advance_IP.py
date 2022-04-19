@@ -18,8 +18,9 @@ response = requests.get("http://localhost:8000/get_IP_list/")
 json_response = response.json()
 json_data = json.loads(json_response)
 IP_of_machins = json_data["IPs"]
-
-app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}], update_title='Updating...', external_stylesheets=[dbc.themes.CYBORG])
+# , external_stylesheets=[dbc.themes.CYBORG]
+app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}],
+ update_title='Updating...')
 
 app.title='GPU Monitoring'
 fig_dropdown = html.Div([
