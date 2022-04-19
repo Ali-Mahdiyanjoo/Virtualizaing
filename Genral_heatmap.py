@@ -14,18 +14,17 @@ import plotly
 import dash
 import json
 
-# , external_stylesheets=[dbc.themes.CYBORG]
-
 app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=device-width, initial-scale=1.0, maximum-scale=2, minimum-scale=0.1,'}],
                                      update_title='Updating...')
 
-app.title='GPU Monitoring'
+app.title='GPU Monitoring' # title of the app
+
 app.layout = html.Div(
     html.Div([
         html.Div(id='live-update-text'),
-        dcc.Graph(id='live-update-graph'),
+        dcc.Graph(id='live-update-graph'), # plot the graph
         dcc.Interval(
-            id='interval-component',
+            id='interval-component', # interval time for updating the graph
             interval=1*70000, # in milliseconds
             n_intervals=0
         )
@@ -49,18 +48,17 @@ def update_graph_live(n):
             IP_list = []
             len_of_response = len(json_data) - 1
             for x in range(len_of_response):
-                ip = json_data[x]["ip"]
-                IP_list.append(ip)
+                ip = json_data[x]["ip"] # get IP from json data
+                IP_list.append(ip) # append IP to IP_list
 
             return IP_list
 
         def fan_Data():# get the fan data
-
             fan_list = []
             len_of_response = len(json_data) - 1
             for x in range(len_of_response):
-                fan = json_data[x]["fan"]
-                fan_list.append(fan)
+                fan = json_data[x]["fan"] # get fan value
+                fan_list.append(fan) # append fan value to fan_list
             if len(fan_list) % 4 == 0: # if the length of the fan list is divisible by 4, then we can plot the data
                 fan_data = np.array(fan_list).reshape(-1, 4)
 
@@ -286,12 +284,13 @@ def update_graph_live(n):
                             xgap = 1,),
                             row=1, col=2)
 
-    fig.update_layout(height = 1080)
+    fig.update_layout(height = 1080) # the height of the figure
     fig.update_layout(title_text = f"last update : {last_update()}") # title of the graph and last update time
     fig.update_layout(template="plotly_dark") # dark theme
     fig.update_xaxes(visible=False) # hide the x axis
     fig.update_yaxes(visible=False) # hide the y axis
+
     return fig
 
-if __name__ == '__main__':
-    app.run_server(debug=True, host="0.0.0.0") # run the server on port 8050
+if __name__ == '__main__': # run the app
+    app.run_server(debug=True, host="0.0.0.0")

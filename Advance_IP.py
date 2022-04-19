@@ -6,8 +6,8 @@ from datetime import datetime
 from time import sleep, time
 from dash import dcc, html
 from inspect import trace
-import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
+import plotly.graph_objs as go
 import numpy as np
 import requests
 import plotly
