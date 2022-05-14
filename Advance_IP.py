@@ -23,23 +23,28 @@ app = dash.Dash(__name__, meta_tags=[{'name': 'viewport','content': 'width=devic
 
 app.title='GPU Monitoring'
 
-fig_dropdown = html.Div([ # dropdown menu
-    dcc.Dropdown(options=[{'label': i, 'value': i} for i in IP_of_machins], value=IP_of_machins[0], 
-    id='dropdown',
-    placeholder="Select IP")])
+app.layout = html.Div([ # dropdown menu
 
-fig_plot = html.Div(html.Div([ # plot the graph
+    html.Div([
+        dcc.Dropdown(options=[{'label': i, 'value': i} for i in IP_of_machins], value=IP_of_machins[0], 
+        id='dropdown',
+        placeholder="Select IP")]),
+
+    html.Div([
         html.Div(id='live-update-text'),
-        dcc.Graph(id='live-update-graph'),
-    ]),
-)
-app.layout = html.Div([fig_dropdown, fig_plot]) # put dropdown menu and plot into the app
+        dcc.Graph(id='live-update-graph'), # plot the graph
+        dcc.Interval(
+            id='interval-component', # interval time for updating the graph
+            interval=1*120000, # in milliseconds
+            n_intervals=0
+        )])])
 
 @app.callback(Output('live-update-graph', 'figure'), 
-                Input('dropdown', 'value'))
+                Input('dropdown', 'value'),
+                Input('interval-component', 'n_intervals'))
 
 
-def update_graph_live(fig_dropdown): # fig_dropdown is the value of dropdown menu
+def update_graph_live(fig_dropdown, n): # fig_dropdown is the value of dropdown menu
     response = requests.get(f"http://localhost:8000/api-gpu-monitor/{fig_dropdown}") # send request to server with selected IP
     json_response = response.json()
     json_data = json.loads(json_response)
