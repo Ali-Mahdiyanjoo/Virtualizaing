@@ -55,10 +55,10 @@ sudo cp nvidia-smi-collector.service /etc/systemd/system
 sudo systemctl enable nvidia-smi-collector.service
 sudo systemctl start nvidia-smi-collector.service
 ```
-8. In the last run All_seervice.py
+8. At the last, run All_services.py
   
   ```
-  python3 All_service.py
+  python3 All_services.py
   ```
 
 ##  <img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="60"> Contributing
