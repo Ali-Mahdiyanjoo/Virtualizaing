@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to GPU Monitoring service <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width="30px"> </h1>
+<h1 align="center">Welcome to GMS <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width="30px"> </h1>
 <p align="center">
 
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
@@ -7,8 +7,8 @@
 ![](https://img.shields.io/badge/Shell-Bash-informational?style=flat&logo=gnu-bash&logoColor=white&color=40c640)
     
 ## Description 
-All of us need to monitor our hardware to achieve more from our machine especially GPU for model training, monitoring large scale machines that have GPU is not an easy thing to do, so because of that, I made this service to help you to do in the right way.
-* Note: this service just run on Linux machine and Nvidia GPU for now :))
+All of us need to monitor our hardware to achieve more from our machine especially GPU for model training, monitoring large scale machines that have GPU is not an easy thing to do, so because of that, I made this GMS(GPU Monitoring Service) to help you to do in the right way.
+* Note: this service just run on Linux machine and Nvidia GPU for now, and for and better user experience use firefox :))
 
 ## Installation <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> 
 </em></p>
@@ -71,8 +71,8 @@ Feel free to check [issues page](https://github.com/adib-vali/DataPanel_Project/
 
 👤 **Ali mahdiyanjoo**
 
-- Linkedin: [@Ali-Mahdiyanjoo](https://www.linkedin.com/in/ali-mahdiyanjoo-1452101b6)
 - Github: [@Ali-Mahdiyanjoo](https://github.com/Ali-Mahdiyanjoo)
+- Linkedin: [@Ali-Mahdiyanjoo](https://www.linkedin.com/in/ali-mahdiyanjoo-1452101b6)
 
 ## 📝 License
 Datapanel analyzer is primarily distributed under the terms the [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE)
