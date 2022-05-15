@@ -75,5 +75,5 @@ Feel free to check [issues page](https://github.com/adib-vali/DataPanel_Project/
 - Linkedin: [@Ali-Mahdiyanjoo](https://www.linkedin.com/in/ali-mahdiyanjoo-1452101b6)
 
 ## 📝 License
-Datapanel analyzer is primarily distributed under the terms the [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE)
+Datapanel analyzer is primarily distributed under the terms the [MIT](https://github.com/Ali-Mahdiyanjoo/Virtualizaing/blob/main/LICENSE)
  license.
