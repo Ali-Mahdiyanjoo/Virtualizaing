@@ -64,8 +64,7 @@ sudo systemctl start nvidia-smi-collector.service
 ##  <img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="60"> Contributing
 
 Contributions, issues and feature requests are welcome.<br />
-Feel free to check [issues page](https://github.com/adib-vali/DataPanel_Project/issues) if you want to contribute.<br />
-[Check the contributing guide](./CONTRIBUTING.md).<br />
+Feel free to check [issues page](https://github.com/Ali-Mahdiyanjoo/Virtualizaing/issues) if you want to contribute.<br />
 
 ## 👩‍💻 Authors 👨‍💻
 
